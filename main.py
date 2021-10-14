@@ -76,7 +76,7 @@ with connection:
                         print(rows)
                         for row in rows:
                             # print("{0} ФИО: {1} {2}".format(row['id'], row['name'], row['phone']))
-                            send_msg(event.user_id, row[0]+' '+row[1]+' '+row[2], keyboard)
+                            send_msg(event.user_id, row[0]+' '+row[1]+' = '+row[2], keyboard)
 
                 # else:
                 #     send_msg(event.user_id, "Не поняла вашего ответа......",keyboard)
