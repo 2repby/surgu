@@ -13,6 +13,7 @@ token = os.getenv('token')
 vk = vk_api.VkApi(token=token)
 longpoll = VkLongPoll(vk)
 
+print(token)
 
 connection = pymysql.connect(
     host=os.getenv('host'),
