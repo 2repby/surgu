@@ -1,1 +1,5 @@
 requests
+os
+vk_api
+random
+pymysql
