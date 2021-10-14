@@ -72,7 +72,7 @@ with connection:
                          and (E.name LIKE '%"+request+"%' OR D.name LIKE '%"+request+"%')")
 
                         rows = cur.fetchall()
-
+                        print(rows)
                         for row in rows:
                             # print("{0} ФИО: {1} {2}".format(row['id'], row['name'], row['phone']))
                             send_msg(event.user_id, row['EN']+' '+row['phone']+' '+row['DN'], keyboard)
