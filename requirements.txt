@@ -1,4 +1,4 @@
 requests
 vk_api
-pymysql
 python-dotenv
+psycopg2-binary

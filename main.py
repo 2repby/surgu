@@ -1,7 +1,7 @@
 import os
 import vk_api
 import random
-import pymysql
+import psycopg2
 
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.longpoll import VkLongPoll, VkEventType
@@ -10,18 +10,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 token = os.getenv('token')
-token = '135b460f05ba32607385aeaf2bc9d44653feccb50626694edb020c5455c58ac05b266bffcee0829ec784f'
 vk = vk_api.VkApi(token=token)
 longpoll = VkLongPoll(vk)
 
 print(token)
+print(os.getenv('host'))
 
-connection = pymysql.connect(
+connection = psycopg2.connect(
     host=os.getenv('host'),
+    port=os.getenv('port'),
     user=os.getenv('user'),
     password=os.getenv('password'),
-    db=os.getenv('db'),
-    cursorclass=DictCursor
+    database=os.getenv('database')
 )
 print(os.getenv('password'))
 
@@ -77,7 +77,7 @@ with connection:
                         print(rows)
                         for row in rows:
                             # print("{0} ФИО: {1} {2}".format(row['id'], row['name'], row['phone']))
-                            send_msg(event.user_id, row['EN']+' '+row['phone']+' '+row['DN'], keyboard)
+                            send_msg(event.user_id, row[0]+' '+row[1]+' '+row[2], keyboard)
 
                 # else:
                 #     send_msg(event.user_id, "Не поняла вашего ответа......",keyboard)
