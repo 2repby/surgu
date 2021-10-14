@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 token = os.getenv('token')
+token = '135b460f05ba32607385aeaf2bc9d44653feccb50626694edb020c5455c58ac05b266bffcee0829ec784f'
 vk = vk_api.VkApi(token=token)
 longpoll = VkLongPoll(vk)
 
