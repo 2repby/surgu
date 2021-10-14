@@ -1,4 +1,4 @@
 requests
 vk_api
 pymysql
-dotenv
+python-dotenv
