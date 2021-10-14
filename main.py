@@ -5,7 +5,6 @@ import psycopg2
 
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.longpoll import VkLongPoll, VkEventType
-# from pymysql.cursors import DictCursor
 from dotenv import load_dotenv
 
 load_dotenv()
