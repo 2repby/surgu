@@ -73,6 +73,43 @@ with connection:
                             cur.execute("INSERT INTO users (first_name, last_name, vk_id) VALUES (%s, %s, %s)",(user["first_name"],user["last_name"],user["id"]))
                             connection.commit()
                             cur.close()
+                        # Получение id пользователя - добавленного или имеющегося
+                        cur = connection.cursor()
+                        cur.execute("SELECT *  FROM users WHERE vk_id=" + str(event.user_id))
+                        rows = cur.fetchall()
+                        for row in rows:
+                            id_user = row[0]
+                        print(id_user)
+                        # Проверка кодового слова
+                        cur = connection.cursor()
+                        cur.execute("SELECT *  FROM lesson WHERE keyword='" + request+"'")
+                        n = cur.rowcount
+
+                        if n > 0:
+                            rows = cur.fetchall()
+                            for row in rows:
+                                id_lesson = row[0]
+                            print(id_lesson)
+                            cur.close()
+                            # Проверка на повтороную запис посещения
+                            cur = connection.cursor()
+                            cur.execute("SELECT *  FROM visit WHERE id_user="+str(id_user) + " AND id_lesson="+str(id_lesson))
+                            n = cur.rowcount
+                            if n==0:
+                                #Добавоение посещения
+                                cur = connection.cursor()
+                                cur.execute("INSERT INTO visit (id_user,id_lesson) VALUES (%s, %s)",(id_user,id_lesson))
+                                connection.commit()
+                                cur.close()
+                            #Вывод списка присуствующих
+                            cur = connection.cursor()
+                            cur.execute("SELECT *  FROM visit,users WHERE visit.id_user = users.id AND  id_lesson=" + str(id_lesson))
+                            rows = cur.fetchall()
+                            cur.close()
+                            print(rows)
+                            for row in rows:
+                                # print("{0} ФИО: {1} {2}".format(row['id'], row['name'], row['phone']))
+                                send_msg(event.user_id, str(row[4]) + ' ' + str(row[5]), keyboard)
                         cur = connection.cursor()
                         cur.execute("SELECT E.name EN, E.phone, D.name DN  FROM employee E,department D WHERE E.dep_id = D.id\
                          and (E.name LIKE '%"+request+"%' OR D.name LIKE '%"+request+"%')")
