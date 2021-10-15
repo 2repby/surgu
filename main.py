@@ -109,7 +109,8 @@ with connection:
                             print(rows)
                             for row in rows:
                                 # print("{0} ФИО: {1} {2}".format(row['id'], row['name'], row['phone']))
-                                send_msg(event.user_id, str(row[4]) + ' ' + str(row[5]), keyboard)
+                                msg = msg + str(row[4]) + ' ' + str(row[5]) + '\n'
+                            send_msg(event.user_id, msg, keyboard)
                         cur = connection.cursor()
                         cur.execute("SELECT E.name EN, E.phone, D.name DN  FROM employee E,department D WHERE E.dep_id = D.id\
                          and (E.name LIKE '%"+request+"%' OR D.name LIKE '%"+request+"%')")
