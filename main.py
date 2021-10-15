@@ -103,7 +103,7 @@ with connection:
                                 cur.close()
                             #Вывод списка присуствующих
                             cur = connection.cursor()
-                            cur.execute("SELECT *  FROM visit,users WHERE visit.id_user = users.id AND  id_lesson=" + str(id_lesson))
+                            cur.execute("SELECT *  FROM visit,users WHERE visit.id_user = users.id AND  id_lesson=" + str(id_lesson)+"ORDER BY users.last_name")
                             rows = cur.fetchall()
                             cur.close()
                             print(rows)
