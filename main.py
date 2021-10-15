@@ -12,8 +12,6 @@ token = os.getenv('token')
 vk = vk_api.VkApi(token=token)
 longpoll = VkLongPoll(vk)
 
-print(token)
-print(os.getenv('host'))
 
 connection = psycopg2.connect(
     host=os.getenv('host'),
@@ -22,7 +20,6 @@ connection = psycopg2.connect(
     password=os.getenv('password'),
     database=os.getenv('database')
 )
-print(os.getenv('password'))
 
 
 # with connection:
@@ -54,7 +51,7 @@ with connection:
 
                 # Сообщение от пользователя
                 request = event.text
-
+                print (event)
 
                 # логика ответа
                 if request == "привет":
