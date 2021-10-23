@@ -90,7 +90,7 @@ with connection:
                         cur.execute("SELECT *  FROM lesson WHERE LOWER(keyword)='" + request.lower()+"' AND '"\
                                     + str(datetime.now()) + "' > start_at AND '" + str(datetime.now()) + "'< end_at")
                         n = cur.rowcount
-
+                        print ('найдено', n)
                         if n > 0:
                             rows = cur.fetchall()
                             for row in rows:
