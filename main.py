@@ -6,10 +6,12 @@ import psycopg2
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.longpoll import VkLongPoll, VkEventType
 from dotenv import load_dotenv
+from datetime import datetime
+print(datetime.now())
 
 load_dotenv()
 token = os.getenv('token')
-vk = vk_api.VkApi(token=token)
+vk = vk_api.VkApi(token=token )
 longpoll = VkLongPoll(vk)
 
 
@@ -80,9 +82,13 @@ with connection:
                         for row in rows:
                             id_user = row[0]
                         print(id_user)
-                        # Проверка кодового слова
+
+                        # Проверка кодового слова и что кодовое слово было введено пользователем в период урока
                         cur = connection.cursor()
-                        cur.execute("SELECT *  FROM lesson WHERE keyword='" + request+"'")
+                        print("SELECT *  FROM lesson WHERE LOWER(keyword)='" + request.lower()+"' AND '"\
+                                    + str(datetime.now()) + "' > start_at AND '" + str(datetime.now()) + "'< end_at")
+                        cur.execute("SELECT *  FROM lesson WHERE LOWER(keyword)='" + request.lower()+"' AND '"\
+                                    + str(datetime.now()) + "' > start_at AND '" + str(datetime.now()) + "'< end_at")
                         n = cur.rowcount
 
                         if n > 0:
@@ -91,7 +97,7 @@ with connection:
                                 id_lesson = row[0]
                             print(id_lesson)
                             cur.close()
-                            # Проверка на повтороную запис посещения
+                            # Проверка на повтороную запись посещения
                             cur = connection.cursor()
                             cur.execute("SELECT *  FROM visit WHERE id_user="+str(id_user) + " AND id_lesson="+str(id_lesson))
                             n = cur.rowcount
