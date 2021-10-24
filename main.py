@@ -119,7 +119,7 @@ with connection:
                                 msg = msg + str(row[4]) + ' ' + str(row[5]) + '\n'
                         else:
                             msg = 'Кодовое слово не найдено или урок (мероприятие) уже завершилось.'
-                        msg = msg + '\nПодробная информация на http://metodist.herokuapp'
+                        msg = msg + '\nПодробная информация на http://metodist.herokuapp.com'
                         send_msg(event.user_id, msg, keyboard)
                         cur = connection.cursor()
                         cur.execute("SELECT E.name EN, E.phone, D.name DN  FROM employee E,department D WHERE E.dep_id = D.id\
