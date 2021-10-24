@@ -91,6 +91,7 @@ with connection:
                                     + str(datetime.now()) + "' > start_at AND '" + str(datetime.now()) + "'< end_at")
                         n = cur.rowcount
                         print ('найдено', n)
+                        msg = ''
                         if n > 0:
                             rows = cur.fetchall()
                             for row in rows:
@@ -102,7 +103,7 @@ with connection:
                             cur.execute("SELECT *  FROM visit WHERE id_user="+str(id_user) + " AND id_lesson="+str(id_lesson))
                             n = cur.rowcount
                             if n==0:
-                                #Добавоение посещения
+                                #Добавление посещения
                                 cur = connection.cursor()
                                 cur.execute("INSERT INTO visit (id_user,id_lesson) VALUES (%s, %s)",(id_user,id_lesson))
                                 connection.commit()
@@ -113,11 +114,13 @@ with connection:
                             rows = cur.fetchall()
                             cur.close()
                             print(rows)
-                            msg = ''
                             for row in rows:
                                 # print("{0} ФИО: {1} {2}".format(row['id'], row['name'], row['phone']))
                                 msg = msg + str(row[4]) + ' ' + str(row[5]) + '\n'
-                            send_msg(event.user_id, msg, keyboard)
+                        else:
+                            msg = 'Кодовое слово не найдено или урок (мероприятие) уже завершилось.'
+                        msg = msg + '\nПодробная информация на http://metodist.herokuapp'
+                        send_msg(event.user_id, msg, keyboard)
                         cur = connection.cursor()
                         cur.execute("SELECT E.name EN, E.phone, D.name DN  FROM employee E,department D WHERE E.dep_id = D.id\
                          and (E.name LIKE '%"+request+"%' OR D.name LIKE '%"+request+"%')")
