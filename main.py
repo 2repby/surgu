@@ -1,30 +1,28 @@
-import os
 import vk_api
-import random
+
 import psycopg2
+import os
 
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from vk_api.longpoll import VkLongPoll, VkEventType
 from dotenv import load_dotenv
+load_dotenv()
 from datetime import datetime
 print(datetime.now())
 
 from message import send_studentgroup_message
 from send import send_msg
+import database
 
-load_dotenv()
+
+
 token = os.getenv('token')
-vk = vk_api.VkApi(token=token )
+print
+vk = vk_api.VkApi(token=token)
 longpoll = VkLongPoll(vk)
 
 
-connection = psycopg2.connect(
-    host=os.getenv('host'),
-    port=os.getenv('port'),
-    user=os.getenv('user'),
-    password=os.getenv('password'),
-    database=os.getenv('database')
-)
+
 
 
 # with connection:
@@ -36,11 +34,13 @@ connection = psycopg2.connect(
 #     for row in rows:
 #         print("{0} ФИО: {1} {2}".format(row['id'], row['name'], row['phone']))
 
+connection = database.connection
 
 # Основной цикл
 with connection:
     for event in longpoll.listen():
-        send_studentgroup_message()
+        print('Начало цикла')
+        send_studentgroup_message(vk)
         keyboard = VkKeyboard(one_time=True)
         keyboard.add_button("Сотрудники", color=VkKeyboardColor.PRIMARY, payload={"button": "1"})
         keyboard.add_button("Отделы", color=VkKeyboardColor.PRIMARY, payload={"button": "2"})
@@ -51,6 +51,9 @@ with connection:
 
             # Если оно имеет метку для меня( то есть бота)
             if event.to_me:
+
+                print('Пришло сообщение')
+
                 # send_msg(event.user_id, "Пример клавиатуры",keyboard)
 
                 # Сообщение от пользователя
@@ -96,6 +99,11 @@ with connection:
                         msg = ''
                         if n > 0:
                             rows = cur.fetchall()
+                            row = rows[0]
+                            msg = 'Спасибо. Я вижу, что ты был уроке (мероприятии) "' + str(row[1]) + \
+                                  '". Тема: "' + str(row[7]) + '". Начало: ' + str(row[4]) + '. Окончание: ' + str(row[5]) +'' \
+                                '. Вместе с тобой присутствовали:\n'
+
                             for row in rows:
                                 id_lesson = row[0]
                             print(id_lesson)
