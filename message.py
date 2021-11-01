@@ -3,6 +3,7 @@ import vk_api
 import database
 connection = database.connection
 
+
 def send_studentgroup_message(vk):
     cur = connection.cursor()
     cur.execute("select * from message where message.sent_at is null and message.send_at <= now()")
