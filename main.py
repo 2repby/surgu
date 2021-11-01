@@ -9,6 +9,8 @@ from dotenv import load_dotenv
 from datetime import datetime
 print(datetime.now())
 
+from message import send_studentgroup_message
+
 load_dotenv()
 token = os.getenv('token')
 vk = vk_api.VkApi(token=token )
@@ -39,6 +41,7 @@ def send_msg(user_id, message, keyboard='{}'):
 # Основной цикл
 with connection:
     for event in longpoll.listen():
+        send_studentgroup_message()
         keyboard = VkKeyboard(one_time=True)
         keyboard.add_button("Сотрудники", color=VkKeyboardColor.PRIMARY, payload={"button": "1"})
         keyboard.add_button("Отделы", color=VkKeyboardColor.PRIMARY, payload={"button": "2"})
