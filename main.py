@@ -10,6 +10,7 @@ from datetime import datetime
 print(datetime.now())
 
 from message import send_studentgroup_message
+from send import send_msg
 
 load_dotenv()
 token = os.getenv('token')
@@ -35,8 +36,6 @@ connection = psycopg2.connect(
 #     for row in rows:
 #         print("{0} ФИО: {1} {2}".format(row['id'], row['name'], row['phone']))
 
-def send_msg(user_id, message, keyboard='{}'):
-    vk.method('messages.send', {'user_id': user_id, 'message': message, 'random_id': random.randint(0, 1000), "keyboard":keyboard})
 
 # Основной цикл
 with connection:
@@ -60,9 +59,9 @@ with connection:
                 print(user["first_name"])
                 # логика ответа
                 if request == "привет":
-                    send_msg(event.user_id, "Хай",keyboard)
+                    send_msg(vk, event.user_id, "Хай",keyboard)
                 elif request == "пока":
-                    send_msg(event.user_id, "Пока((",keyboard)
+                    send_msg(vk, event.user_id, "Пока((",keyboard)
 
                 # elif event.message['payload'] == '{"button":"2"}':
                 #     send_msg(event.user_id, "Кнопка 2")
@@ -123,7 +122,7 @@ with connection:
                         else:
                             msg = 'Кодовое слово не найдено или урок (мероприятие) уже завершилось.'
                         msg = msg + '\nПодробная информация на http://metodist.herokuapp.com'
-                        send_msg(event.user_id, msg, keyboard)
+                        send_msg(vk, event.user_id, msg, keyboard)
                         cur = connection.cursor()
                         cur.execute("SELECT E.name EN, E.phone, D.name DN  FROM employee E,department D WHERE E.dep_id = D.id\
                          and (E.name LIKE '%"+request+"%' OR D.name LIKE '%"+request+"%')")
@@ -133,7 +132,7 @@ with connection:
                         print(rows)
                         for row in rows:
                             # print("{0} ФИО: {1} {2}".format(row['id'], row['name'], row['phone']))
-                            send_msg(event.user_id, row[0]+' '+row[1]+' = '+row[2], keyboard)
+                            send_msg(vk, event.user_id, row[0]+' '+row[1]+' = '+row[2], keyboard)
 
                 # else:
                 #     send_msg(event.user_id, "Не поняла вашего ответа......",keyboard)
