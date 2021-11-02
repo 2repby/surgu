@@ -40,6 +40,10 @@ connection = database.connection
 with connection:
     for event in longpoll.listen():
         print('Начало цикла')
+        cur = connection.cursor()
+        cur.execute("select now()")
+        print(cur.fetchall())
+        cur.close()
         send_studentgroup_message(vk)
         keyboard = VkKeyboard(one_time=True)
         keyboard.add_button("Сотрудники", color=VkKeyboardColor.PRIMARY, payload={"button": "1"})
@@ -100,7 +104,7 @@ with connection:
                         if n > 0:
                             rows = cur.fetchall()
                             row = rows[0]
-                            msg = 'Спасибо. Я вижу, что ты был уроке (мероприятии) "' + str(row[1]) + \
+                            msg = 'Спасибо. Я вижу, что ты был(а) уроке (мероприятии) "' + str(row[1]) + \
                                   '". Тема: "' + str(row[7]) + '". Начало: ' + str(row[4]) + '. Окончание: ' + str(row[5]) +'' \
                                 '. Вместе с тобой присутствовали:\n'
 
