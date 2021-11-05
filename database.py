@@ -9,5 +9,5 @@ connection = psycopg2.connect(
     password=os.getenv('password'),
     database=os.getenv('database')
 )
-cur = connection.cursor()
-cur.execute("set timezone=05")
+# cur = connection.cursor()
+# cur.execute("set timezone=05")
