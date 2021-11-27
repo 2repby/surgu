@@ -8,6 +8,7 @@ connection = database.connection
 def send_studentgroup_message(vk):
     cur = connection.cursor()
     cur.execute("select * from message where message.sent_at is null and message.send_at <= now()")
+    print ("select * from message where message.sent_at is null and message.send_at <= now()")
     n = cur.rowcount
     print('найдено', n, 'сообщений для рассылки')
     if n > 0:

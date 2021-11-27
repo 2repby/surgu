@@ -17,7 +17,6 @@ import database
 
 
 token = os.getenv('token')
-print
 vk = vk_api.VkApi(token=token)
 longpoll = VkLongPoll(vk)
 
