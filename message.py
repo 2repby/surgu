@@ -6,6 +6,7 @@ connection = database.connection
 
 
 def send_studentgroup_message(vk):
+    n = 0;
     cur = connection.cursor()
     cur.execute("select * from message where message.sent_at is null and message.send_at <= now()")
     print ("select * from message where message.sent_at is null and message.send_at <= now()")
