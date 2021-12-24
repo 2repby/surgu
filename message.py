@@ -12,6 +12,7 @@ def send_studentgroup_message(vk):
     print ("select * from message where message.sent_at is null and message.send_at <= now()")
     n = cur.rowcount
     print('найдено', n, 'сообщений для рассылки')
+
     if n > 0:
         rows = cur.fetchall()
         cur.close()
